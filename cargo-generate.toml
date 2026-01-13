@@ -1,0 +1,16 @@
+[template]
+cargo_generate_version = ">=0.10.0"
+
+[placeholders.project-name]
+type = "string"
+prompt = "Project name?"
+
+[placeholders.author]
+type = "string"
+prompt = "Author name?"
+default = ""
+
+[placeholders.description]
+type = "string"
+prompt = "Project description?"
+default = "A game created with bevy_map_editor"
