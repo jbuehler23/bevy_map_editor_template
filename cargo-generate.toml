@@ -1,9 +1,8 @@
 [template]
 cargo_generate_version = ">=0.10.0"
 
-[placeholders.project-name]
-type = "string"
-prompt = "Project name?"
+# Note: project-name is automatically provided by cargo-generate from the command line
+# Do NOT define it as a placeholder - it's reserved
 
 [placeholders.author]
 type = "string"
