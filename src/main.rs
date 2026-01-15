@@ -31,16 +31,44 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         Transform::from_xyz(400.0, 300.0, 0.0),
     ));
 
-    // Load the map from assets/maps/
-    // Replace "your_map.map.json" with your actual map filename
-    // The map will be copied here when you click "Run Game" in the editor
-    commands.spawn(MapHandle(asset_server.load("maps/your_map.map.json")));
+    // Auto-discover and load all maps from assets/maps/
+    let maps = discover_maps();
+    if maps.is_empty() {
+        warn!("No maps found in assets/maps/ - click 'Run Game' in the editor to sync maps");
+    } else {
+        for map_file in &maps {
+            info!("Loading map: {}", map_file);
+            commands.spawn(MapHandle(asset_server.load(format!("maps/{}", map_file))));
+        }
+    }
 
     info!("Game started!");
     info!("Controls: WASD to pan, Q/E to zoom");
 
     #[cfg(feature = "dev")]
     info!("Hot-reload enabled: Save your map in the editor to see changes!");
+}
+
+/// Discover all map files in assets/maps/
+fn discover_maps() -> Vec<String> {
+    let maps_dir = std::path::Path::new("assets/maps");
+    if !maps_dir.exists() {
+        return vec![];
+    }
+
+    std::fs::read_dir(maps_dir)
+        .into_iter()
+        .flatten()
+        .filter_map(|e| e.ok())
+        .filter(|e| {
+            e.path()
+                .extension()
+                .map(|x| x == "json")
+                .unwrap_or(false)
+        })
+        .filter(|e| e.file_name().to_string_lossy().ends_with(".map.json"))
+        .map(|e| e.file_name().to_string_lossy().to_string())
+        .collect()
 }
 
 /// Basic camera controls: WASD to pan, Q/E to zoom
