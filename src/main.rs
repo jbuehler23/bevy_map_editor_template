@@ -7,6 +7,8 @@ use bevy::prelude::*;
 use bevy::window::WindowResolution;
 use bevy_map_runtime::{MapHandle, MapRuntimePlugin};
 
+mod generated;
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
@@ -19,6 +21,8 @@ fn main() {
         }))
         // Add the map runtime plugin for rendering tilemaps
         .add_plugins(MapRuntimePlugin)
+        // Add the generated plugin for entity types and behaviors
+        .add_plugins(generated::GeneratedPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, camera_controls)
         .run();
