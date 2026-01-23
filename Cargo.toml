@@ -15,7 +15,7 @@ bevy_map_core = { git = "https://github.com/jbuehler23/bevy_map_editor", package
 [features]
 default = []
 # Enable file watching for hot-reload during development
-dev = ["bevy/file_watcher"]
+hot_reload = ["bevy/file_watcher"]
 
 # Optimize for faster compile times during development
 [profile.dev]
@@ -23,3 +23,6 @@ opt-level = 1
 
 [profile.dev.package."*"]
 opt-level = 3
+
+# Mark as standalone workspace (not part of parent workspace)
+[workspace]
